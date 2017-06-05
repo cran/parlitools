@@ -1,0 +1,50 @@
+## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
+library(leaflet)
+library(sf)
+library(htmlwidgets)
+library(dplyr)
+library(hansard)
+library(mnis)
+library(parlitools)
+library(cartogram)
+
+local_hex_map <- parlitools::local_hex_map
+
+council_data <- parlitools::council_data
+
+party_colour <- parlitools::party_colour
+
+council_data <- left_join(council_data, party_colour, by = c("majority_party_id"="party_id", "majority_party"="party_name")) #Join to current MP data
+
+local_hex_map <- left_join(local_hex_map, council_data, by = "la_code") #Join colours to hexagon map
+
+
+# Creating map labels
+labels <- paste0(
+  "<strong>", local_hex_map$name, "</strong>", "</br>",
+  "Party: ", local_hex_map$majority_party, "</br>",
+  "Governing Coalition: ", local_hex_map$governing_coalition
+) %>% lapply(htmltools::HTML)
+
+
+# Creating the map itself
+leaflet(options=leafletOptions(
+  dragging = FALSE, zoomControl = FALSE, tap = FALSE,
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  attributionControl = FALSE),
+  local_hex_map) %>%
+  addPolygons(
+    color = "grey",
+    weight=0.75,
+    opacity = 0.5,
+    fillOpacity = 1,
+    fillColor = ~party_colour,
+    label=labels) %>% 
+ htmlwidgets::onRender(
+    "function(x, y) {
+        var myMap = this;
+        myMap._container.style['background'] = '#fff';
+    }")%>% 
+  mapOptions(zoomToLimits = "first")
+
+

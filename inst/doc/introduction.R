@@ -1,6 +1,7 @@
-## ----fig.width= 8, fig.height=4,message=FALSE----------------------------
+## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
 library(leaflet)
 library(sf)
+library(htmlwidgets)
 library(dplyr)
 library(hansard)
 library(mnis)
@@ -19,14 +20,17 @@ west_hex_map <- left_join(west_hex_map, mps_colours, by = "gss_code") #Join colo
 # Creating map labels
 labels <- paste0(
   "<strong>", west_hex_map$constituency_name, "</strong>", "</br>",
-  west_hex_map$party_name, "</br>",
-  west_hex_map$display_as, "</br>",
-  "2015 Result: ", west_hex_map$result_of_election, "</br>",
-  "2015 Majority: ", west_hex_map$majority
+  "Party: ", west_hex_map$party_name, "</br>",
+  "MP: ", west_hex_map$display_as, "</br>",
+  "Most Recent Result: ", west_hex_map$result_of_election, "</br>",
+  "Current Majority: ", west_hex_map$majority, " votes"
 ) %>% lapply(htmltools::HTML)
 
 # Creating the map itself
-leaflet(
+leaflet(options=leafletOptions(
+  dragging = FALSE, zoomControl = FALSE, tap = FALSE,
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  attributionControl = FALSE),
   west_hex_map) %>%
   addPolygons(
     color = "grey",
@@ -34,29 +38,39 @@ leaflet(
     opacity = 0.5,
     fillOpacity = 1,
     fillColor = ~party_colour,
-    label=labels) 
+    label=labels)  %>% 
+  htmlwidgets::onRender(
+    "function(x, y) {
+        var myMap = this;
+        myMap._container.style['background'] = '#fff';
+    }")
 
-
-## ----fig.width= 8, fig.height=4,message=FALSE----------------------------
+## ----fig.width= 6, fig.height=7,message=FALSE----------------------------
 library(leaflet)
 library(sf)
+library(htmlwidgets)
 library(dplyr)
 library(hansard)
+library(mnis)
+library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map #Base map
 
-trump_yes <- epetition(ID = 680905, by_constituency=TRUE) #Download pro-inviting Trump signatures
+trump_yes <- hansard::epetition(ID = 680905, by_constituency=TRUE) #Download pro-inviting Trump signatures
 
 pal = colorNumeric("Oranges", trump_yes$number_of_signatures)
 
-west_trump_yes <- left_join(west_hex_map, trump_yes, by = "gss_code") #Joining to base map
+west_trump_yes <- dplyr::left_join(west_hex_map, trump_yes, by = "gss_code") #Joining to base map
 
 label_yes <- paste0(
   "<strong>", west_trump_yes$constituency_name, "</strong>", "</br>",
   "Signatures: ", west_trump_yes$number_of_signatures
 ) %>% lapply(htmltools::HTML)
 
-leaflet(
+leaflet(options=leafletOptions(
+  dragging = FALSE, zoomControl = FALSE, tap = FALSE,
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  attributionControl = FALSE),
   west_trump_yes) %>%
   addPolygons(
     color = "grey",
@@ -67,20 +81,28 @@ leaflet(
     label = label_yes) %>%
   addLegend("topright", pal = pal, values = ~number_of_signatures,
     title = "Number of Signatures",
-    opacity = 1
-  )
+    opacity = 1)  %>% 
+  htmlwidgets::onRender(
+    "function(x, y) {
+        var myMap = this;
+        myMap._container.style['background'] = '#fff';
+    }")%>% 
+  mapOptions(zoomToLimits = "first")
 
-## ----fig.width= 8, fig.height=4,message=FALSE----------------------------
+## ----fig.width=6, fig.height=7, message=FALSE----------------------------
 library(leaflet)
 library(sf)
+library(htmlwidgets)
 library(dplyr)
 library(hansard)
+library(mnis)
+library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map #Base map
 
-trump_no <- epetition(ID = 648278, by_constituency=TRUE) #Download anti-inviting Trump signatures
+trump_no <- hansard::epetition(ID = 648278, by_constituency=TRUE) #Download anti-inviting Trump signatures
 
-west_trump_no <- left_join(west_hex_map, trump_no, by = "gss_code") #Joining to base map
+west_trump_no <- dplyr::left_join(west_hex_map, trump_no, by = "gss_code") #Joining to base map
 
 pal = colorNumeric("Blues", trump_no$number_of_signatures)
 
@@ -89,7 +111,10 @@ label_no <- paste0(
   "Signatures: ", west_trump_no$number_of_signatures
 ) %>% lapply(htmltools::HTML)
 
-leaflet(
+leaflet(options=leafletOptions(
+  dragging = FALSE, zoomControl = FALSE, tap = FALSE,
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  attributionControl = FALSE),
   west_trump_no) %>%
   addPolygons(
     color = "grey",
@@ -100,6 +125,11 @@ leaflet(
     label = label_no) %>%
   addLegend("topright", pal = pal, values = ~number_of_signatures,
     title = "Number of Signatures",
-    opacity = 1
-  )
+    opacity = 1)  %>% 
+  htmlwidgets::onRender(
+    "function(x, y) {
+        var myMap = this;
+        myMap._container.style['background'] = '#fff';
+    }")%>% 
+  mapOptions(zoomToLimits = "first")
 
