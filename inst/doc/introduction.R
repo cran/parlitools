@@ -1,3 +1,31 @@
+## ----fig.width=4, fig.height=5, message=FALSE, warning=FALSE-------------
+library(leaflet)
+library(sf)
+library(htmlwidgets)
+library(dplyr)
+library(hansard)
+library(mnis)
+library(parlitools)
+devtools::install_github("tidyverse/ggplot2")
+library(ggplot2)
+
+west_hex_map <- parlitools::west_hex_map
+
+party_col <- parlitools::party_colour
+
+mps <- mps_on_date("2017-06-20")
+
+mps_colours <- left_join(mps, party_col, by = "party_id") #Join to current MP data
+
+west_hex_map <- left_join(west_hex_map, mps_colours, by = "gss_code") #Join colours to hexagon map
+
+p_orgs <- ggplot(west_hex_map) +
+  geom_sf(aes(fill = party_colour), size = 0.2) +
+    scale_fill_identity(aes(values = unique(party_colour))) + 
+  theme_void() + theme(legend.position = "bottom")
+
+print(p_orgs)
+
 ## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
 library(leaflet)
 library(sf)
@@ -9,11 +37,11 @@ library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map
 
-party_colour <- parlitools::party_colour
+party_col <- parlitools::party_colour
 
-mps <- mps_on_date("2017-04-19")
+mps <- mps_on_date("2017-06-20")
 
-mps_colours <- left_join(mps, party_colour, by = "party_id") #Join to current MP data
+mps_colours <- left_join(mps, party_col, by = "party_id") #Join to current MP data
 
 west_hex_map <- left_join(west_hex_map, mps_colours, by = "gss_code") #Join colours to hexagon map
 
