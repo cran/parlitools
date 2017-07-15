@@ -1,8 +1,8 @@
 Package: parlitools
 Type: Package
 Title: Tools for Analysing UK Politics
-Date: 2017-07-07
-Version: 0.0.7
+Date: 2017-07-15
+Version: 0.1.0
 Authors@R: person("Evan Odell", email="evanodell91@gmail.com", role=c("aut", "cre"))
 Author: Evan Odell [aut, cre]
 Maintainer: Evan Odell <evanodell91@gmail.com>
@@ -16,9 +16,9 @@ Imports: mnis, hansard, dplyr, utils, tibble, httr, jsonlite, stringi,
         sf
 RoxygenNote: 6.0.1
 Suggests: knitr, rmarkdown, testthat, covr, rgdal, devtools, leaflet,
-        htmltools, cartogram, htmlwidgets, ggplot2
+        htmltools, cartogram, htmlwidgets
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-07-07 10:46:20 UTC; EOdell
+Packaged: 2017-07-15 10:44:18 UTC; evanodell
 Repository: CRAN
-Date/Publication: 2017-07-07 16:23:05 UTC
+Date/Publication: 2017-07-15 12:20:09 UTC
