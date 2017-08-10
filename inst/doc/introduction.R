@@ -45,50 +45,6 @@ leaflet(options=leafletOptions(
         myMap._container.style['background'] = '#fff';
     }")
 
-## ----fig.width= 6, fig.height=7,message=FALSE----------------------------
-library(leaflet)
-library(sf)
-library(htmlwidgets)
-library(dplyr)
-library(hansard)
-library(mnis)
-library(parlitools)
-
-west_hex_map <- parlitools::west_hex_map #Base map
-
-trump_yes <- hansard::epetition(ID = 680905, by_constituency=TRUE) #Download pro-inviting Trump signatures
-
-pal = colorNumeric("Oranges", trump_yes$number_of_signatures)
-
-west_trump_yes <- dplyr::left_join(west_hex_map, trump_yes, by = "gss_code") #Joining to base map
-
-label_yes <- paste0(
-  "<strong>", west_trump_yes$constituency_name, "</strong>", "</br>",
-  "Signatures: ", west_trump_yes$number_of_signatures
-) %>% lapply(htmltools::HTML)
-
-leaflet(options=leafletOptions(
-  dragging = FALSE, zoomControl = FALSE, tap = FALSE,
-  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
-  attributionControl = FALSE),
-  west_trump_yes) %>%
-  addPolygons(
-    color = "grey",
-    weight=0.75,
-    opacity = 0.5,
-    fillOpacity = 1,
-    fillColor = ~pal(number_of_signatures),
-    label = label_yes) %>%
-  addLegend("topright", pal = pal, values = ~number_of_signatures,
-    title = "Number of Signatures",
-    opacity = 1)  %>% 
-  htmlwidgets::onRender(
-    "function(x, y) {
-        var myMap = this;
-        myMap._container.style['background'] = '#fff';
-    }")%>% 
-  mapOptions(zoomToLimits = "first")
-
 ## ----fig.width=6, fig.height=7, message=FALSE----------------------------
 library(leaflet)
 library(sf)
@@ -132,4 +88,20 @@ leaflet(options=leafletOptions(
         myMap._container.style['background'] = '#fff';
     }")%>% 
   mapOptions(zoomToLimits = "first")
+
+## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
+library(dplyr)
+library(ggplot2)
+
+census_11 <- parlitools::census_11
+
+bes_2017 <- parlitools::bes_2017
+
+elect_results <- left_join(census_11, bes_2017)
+
+degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + 
+  geom_smooth(size=1.75, colour = "#DC241F") + ylab("Share of Votes Cast for Labour") + xlab("Percentage of Population with a University Degree")
+
+degree_plot
+
 
