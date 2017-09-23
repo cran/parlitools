@@ -1,10 +1,8 @@
-## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
+## ----fig.width=6, echo=TRUE, fig.height=7, message=FALSE, warning=FALSE----
 library(leaflet)
 library(sf)
 library(htmlwidgets)
 library(dplyr)
-library(hansard)
-library(mnis)
 library(parlitools)
 library(cartogram)
 

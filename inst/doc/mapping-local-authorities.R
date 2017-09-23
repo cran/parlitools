@@ -3,8 +3,6 @@ library(leaflet)
 library(sf)
 library(htmlwidgets)
 library(dplyr)
-library(hansard)
-library(mnis)
 library(parlitools)
 library(cartogram)
 

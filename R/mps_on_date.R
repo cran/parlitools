@@ -1,78 +1,58 @@
+
+#' MPs on or between two dates 
+#' 
 #' Retrieve information on all MPs who were members of the House of Commons on a date or between two dates. 
 #' 
-#' Returns information on all MPs who were members of the House of Commons on the date specificed (if only one date is included as a parameter), or on or between the two dates if two are specified. Includes constituency and electoral information if the date is 2010-05-06 or later, or if the date range is entirely within 2010-05-06 and the present day.
+#' Returns information on all MPs who were members of the House of Commons on the date specificed (if only one date is included as a parameter), or on or between the two dates if both are specified. Includes constituency and electoral information if the date is 2010-05-06 or later, or if the date range is entirely between 2010-05-06 and the present day. This function is identical to the \code{\link[mnis]{mnis_mps_on_date}} function from the \code{mnis} package, except it includes consituency data from the 2010 General Election (on 2010-05-06) onwards.
 #'
-#' @param date1 The date to return the list of MPs from. Accepts character values in "YYYY-MM-DD" format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}. Defaults to current system date. 
-#' @param date2 An optional query parameter. Accepts character values in "YYYY-MM-DD" format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}. If a proper date, the function returns a list of all MPs who were members between date2 and date1. Defaults to NULL.
-#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
-#' @param tidy_style The style to convert variable names to, if tidy=TRUE. Accepts one of "snake_case", "camelCase" and "period.case". Defaults to "snake_case".
+#' @param date1 The date to return the list of MPs from. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to current system date. 
+#' @param date2 An optional query parameter. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. If a proper date, the function returns a list of all MPs who were members between \code{date2} and \code{date1}. Defaults to \code{NULL}.
+#' @param tidy If \code{TRUE}, fixes the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to \code{TRUE}.
+#' @param tidy_style The style to convert variable names to, if \code{tidy=TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'} and \code{'period.case'}. Defaults to \code{'snake_case'}.
 #'
-#' @return A tibble with information on all MPs who were members of the House of Commons on the date specificed (if only date1 is included as a parameter), or on or between the two dates if both date1 and date2 are specified.
+#' @return A tibble with information on all MPs who were members of the House of Commons on the date specificed (if only \code{date1} is included as a parameter), or on or between the two dates if both \code{date1} and \code{date2} are specified.
 #' @export
 #'
 #' @examples \dontrun{
-#'
 #' x <- mps_on_date(date1="2017-04-19", date2="2010-05-04")
-#'
 #' }
 
 
-mps_on_date <- function(date1 = Sys.Date(), date2=NULL, tidy = TRUE, tidy_style="snake_case"){
-  
-  message("Downloading MP data")
-  
-  baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons|Membership=all|commonsmemberbetween="
+mps_on_date <- function(date1 = Sys.Date(), date2 = NULL, tidy = TRUE, tidy_style = "snake_case"){
   
   date1 <- as.Date(date1)
   
   if(is.null(date2)==FALSE) {
+    
     date2 <- as.Date(date2)
+    
   }
   
   if(is.null(date2)==TRUE) {
+    
     date2 <- date1
+    
   } else if (date1 > date2) {
+    
     date3 <- date1
+    
     date1 <- date2
+    
     date2 <- date3
+    
     rm(date3)
-  }
-  
-  query <- paste0(baseurl,date1,"and",date2,"/")
-  
-  got <- httr::GET(query, httr::accept_json())
-  
-  if (httr::http_type(got) != "application/json") {
-    stop("API did not return json", call. = FALSE)
-  }
-  
-  got <- mnis::tidy_bom(got)
-  
-  got <- jsonlite::fromJSON(got, flatten = TRUE)
-  
-  mps <- tibble::as_tibble(got$Members$Member)
-  
-  if(.Platform$OS.type=="windows"){
-    
-    mps$MemberFrom <- stringi::stri_trans_general(mps$MemberFrom, "latin-ascii")
-    
-    mps$MemberFrom <- gsub("Ynys MA\U00B4n", "Ynys M\U00F4n", mps$MemberFrom)
     
   }
+  
+  mps <- mnis::mnis_mps_on_date(date1 = date1, date2 = date2, tidy = tidy, tidy_style = tidy_style)
     
-  if(date1 >= "2010-05-06"){
+  if(date1 >= "2010-05-06"){##As the API only works for the 2010 General Election onwards
     
-    mps <- mnis::mnis_tidy(mps, tidy_style = "snake_case")
+    mps <- parlitools_tidy(mps, tidy_style = "snake_case")
     
     message("Downloading constituency data")
     
-    suppressMessages(constit <- hansard::constituencies(current = FALSE))
-    
-    constit$ended_date_value[is.na(constit$ended_date_value)] <- Sys.Date()
-    
-    constit2 <- constit[constit$started_date_value <= date1 & constit$ended_date_value >= date2,]
-    
-    constit2$ended_date_value[constit2$ended_date_value==Sys.Date()] <- NA 
+    suppressMessages(constit <- hansard::constituencies(current = TRUE))
     
     suppressMessages(elect <- hansard::elections())
     
@@ -90,9 +70,9 @@ mps_on_date <- function(date1 = Sys.Date(), date2=NULL, tidy = TRUE, tidy_style=
     
     elect_res2 <- subset(elect_res2,!duplicated(elect_res2$constituency_about))
     
-    constit2$about <- gsub("http://data.parliament.uk/resources/", "", constit2$about)
+    constit$about <- gsub("http://data.parliament.uk/resources/", "", constit$about)
     
-    const_elect <- left_join(constit2, elect_res2, by = c("about"= "constituency_about"))
+    const_elect <- left_join(constit, elect_res2, by = c("about"= "constituency_about"))
     
     df <- dplyr::left_join(mps, const_elect, by = c("member_from"= "constituency_label_value"))
     
@@ -106,27 +86,19 @@ mps_on_date <- function(date1 = Sys.Date(), date2=NULL, tidy = TRUE, tidy_style=
     
       df <- parlitools_tidy(df, tidy_style)
     
+    }
+    
       df
-    
-    } else {
-    
-    df
-    
-  }
   
   } else {
     
     if (tidy == TRUE) {
       
       mps <- parlitools_tidy(mps, tidy_style)
+
+    } 
       
       mps
-      
-    } else {
-      
-      mps
-      
-    }
     
   }
     

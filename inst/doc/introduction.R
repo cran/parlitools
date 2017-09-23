@@ -3,8 +3,6 @@ library(leaflet)
 library(sf)
 library(htmlwidgets)
 library(dplyr)
-library(hansard)
-library(mnis)
 library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map
@@ -51,7 +49,6 @@ library(sf)
 library(htmlwidgets)
 library(dplyr)
 library(hansard)
-library(mnis)
 library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map #Base map
@@ -99,7 +96,7 @@ bes_2017 <- parlitools::bes_2017
 
 elect_results <- left_join(census_11, bes_2017)
 
-degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + 
+degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + geom_point(alpha=0.75) + 
   geom_smooth(size=1.75, colour = "#DC241F") + ylab("Share of Votes Cast for Labour") + xlab("Percentage of Population with a University Degree")
 
 degree_plot
