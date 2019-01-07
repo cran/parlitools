@@ -36,7 +36,7 @@ leaflet(options=leafletOptions(
     opacity = 0.5,
     fillOpacity = 1,
     fillColor = ~party_colour,
-    label=labels)  %>% 
+    label=labels)  %>%
   htmlwidgets::onRender(
     "function(x, y) {
         var myMap = this;
@@ -78,12 +78,12 @@ leaflet(options=leafletOptions(
     label = label_no) %>%
   addLegend("topright", pal = pal, values = ~number_of_signatures,
     title = "Number of Signatures",
-    opacity = 1)  %>% 
+    opacity = 1)  %>%
   htmlwidgets::onRender(
     "function(x, y) {
         var myMap = this;
         myMap._container.style['background'] = '#fff';
-    }")%>% 
+    }")%>%
   mapOptions(zoomToLimits = "first")
 
 ## ----fig.width=6, fig.height=7, message=FALSE, warning=FALSE-------------
@@ -96,7 +96,7 @@ bes_2017 <- parlitools::bes_2017
 
 elect_results <- left_join(census_11, bes_2017)
 
-degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + geom_point(alpha=0.75) + 
+degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + geom_point(alpha=0.75) +
   geom_smooth(size=1.75, colour = "#DC241F") + ylab("Share of Votes Cast for Labour") + xlab("Percentage of Population with a University Degree")
 
 degree_plot

@@ -8,19 +8,21 @@ library(cartogram)
 
 local_hex_map <- parlitools::local_hex_map
 
-council_data <- parlitools::council_data
+council_data <- parlitools::council_seats()
 
 party_colour <- parlitools::party_colour
 
-council_data <- left_join(council_data, party_colour, by = c("majority_party_id"="party_id", "majority_party"="party_name")) #Join to current MP data
+council_data <- left_join(council_data, party_colour,
+                          by = c("majority_party"="party_name",
+                                 "majority_party"="party_name")) #Join to current MP data
 
 local_hex_map <- left_join(local_hex_map, council_data, by = "la_code") #Join colours to hexagon map
 
 
 # Creating map labels
 labels <- paste0(
-  "<strong>", local_hex_map$name, "</strong>", "</br>",
-  "Party: ", local_hex_map$majority_party, "</br>",
+  "<strong>", local_hex_map$la_name, "</strong>", "</br>",
+  "Largest Party: ", local_hex_map$majority_party, "</br>",
   "Governing Coalition: ", local_hex_map$governing_coalition
 ) %>% lapply(htmltools::HTML)
 
@@ -37,12 +39,12 @@ leaflet(options=leafletOptions(
     opacity = 0.5,
     fillOpacity = 1,
     fillColor = ~party_colour,
-    label=labels) %>% 
+    label=labels) %>%
  htmlwidgets::onRender(
     "function(x, y) {
         var myMap = this;
         myMap._container.style['background'] = '#fff';
-    }")%>% 
+    }")%>%
   mapOptions(zoomToLimits = "first")
 
 
