@@ -86,11 +86,12 @@
 #' Christopher Prosser. "British Election Study, 2015: General Election
 #' Results Dataset," 2015. doi:10.13140/RG.2.1.1162.1844.
 #'
-#' @format A tibble, containing 650 rows and 92 columns. For full details see
-#' the vignette:
+#' @format A tibble, containing 650 rows and 92 columns. For full details on 
+#' the included variables see the vignette:
 #' <\url{http://docs.evanodell.com/parlitools/articles/bes-2015.html}>
 #' @source \url{http://www.britishelectionstudy.com/data-object/2015-bes-constituency-results-with-census-and-candidate-data/}
-#' @rdname bes
+#' @seealso bes_2017
+#' @seealso census_2011
 "bes_2015"
 
 
@@ -112,11 +113,12 @@
 #' C. van der Eijk, J. Mellon & C. Prosser (2017) British Election Study
 #' 2017 Constituency Results file, version 1.0.
 #'
-#' @format A tibble, containing 632 rows and 123 columns. For full details
-#' see the vignette:
+#' @format A tibble, containing 632 rows and 123 columns. For full details on 
+#' the included variables see the vignette:
 #' <\url{http://docs.evanodell.com/parlitools/articles/bes-2017.html}>
 #' @source \url{http://www.britishelectionstudy.com/data-object/2017-bes-constituency-results-with-census-and-candidate-data/}
-#' @rdname bes
+#' @seealso bes_2015
+#' @seealso census_2011
 "bes_2017"
 
 # census_11 ------------------------------------------------------------
@@ -127,23 +129,28 @@
 #' linked to the \code{\link{bes_2017}} and \code{\link{bes_2015}} datasets
 #' using the \code{pano}, \code{ons_const_id} and
 #' \code{constituency_name} variables.
+#' 
+#' @references Fieldhouse, Edward, Jane Green, Geoffrey Evans,
+#' Hermann Schmitt, Cees van der Eijk, Jonathan Mellon, and
+#' Christopher Prosser. "British Election Study, 2015: General Election
+#' Results Dataset," 2015. doi:10.13140/RG.2.1.1162.1844.
 #'
-#' @format A tibble, containing 632 rows and 191 columns. For full details see
-#' the vignette:
+#' @format A tibble, containing 632 rows and 191 columns. For full details on 
+#' the included variables see the vignette:
 #' <\url{http://docs.evanodell.com/parlitools/articles/census-11.html}>
 #'
 #' @source \url{http://www.britishelectionstudy.com/data-object/2017-bes-constituency-results-with-census-and-candidate-data/}
-#' @rdname bes
+#' @seealso bes_2015
+#' @seealso bes_2017
 "census_11"
 
 # la_codes ------------------------------------------------------------
 #' A tibble with the name, ONS code and local authority type for UK
 #' local authorities.
 #'
-#'
 #' @format A tibble, with 418 rows and 3 columns.
 #' \describe{
-#' #' \item{\code{name}}{Local Authority Name}
+#' \item{\code{name}}{Local Authority Name}
 #' \item{\code{la_code}}{The Local Authority code from the Office for
 #' National Statistics}
 #' \item{\code{type}}{The type of local authority}

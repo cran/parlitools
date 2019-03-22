@@ -11,9 +11,11 @@ party_col <- parlitools::party_colour
 
 mps <- mps_on_date("2017-06-20")
 
-mps_colours <- left_join(mps, party_col, by = "party_id") #Join to current MP data
+mps_colours <- left_join(mps, party_col, by = "party_id") 
+#Join to current MP data
 
-west_hex_map <- left_join(west_hex_map, mps_colours, by = "gss_code") #Join colours to hexagon map
+west_hex_map <- left_join(west_hex_map, mps_colours, by = "gss_code") 
+#Join colours to hexagon map
 
 # Creating map labels
 labels <- paste0(
@@ -27,7 +29,7 @@ labels <- paste0(
 # Creating the map itself
 leaflet(options=leafletOptions(
   dragging = FALSE, zoomControl = FALSE, tap = FALSE,
-  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75), list(58.25,50.0)),
   attributionControl = FALSE),
   west_hex_map) %>%
   addPolygons(
@@ -53,9 +55,11 @@ library(parlitools)
 
 west_hex_map <- parlitools::west_hex_map #Base map
 
-trump_no <- hansard::epetition(ID = 648278, by_constituency=TRUE) #Download anti-inviting Trump signatures
+trump_no <- hansard::epetition(ID = 648278, by_constituency=TRUE) 
+#Download anti-inviting Trump signatures
 
-west_trump_no <- dplyr::left_join(west_hex_map, trump_no, by = "gss_code") #Joining to base map
+west_trump_no <- dplyr::left_join(west_hex_map, trump_no, by = "gss_code") 
+#Joining to base map
 
 pal = colorNumeric("Blues", trump_no$number_of_signatures)
 
@@ -66,7 +70,7 @@ label_no <- paste0(
 
 leaflet(options=leafletOptions(
   dragging = FALSE, zoomControl = FALSE, tap = FALSE,
-  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75),list(58.25,50.0)),
+  minZoom = 6, maxZoom = 6, maxBounds = list(list(2.5,-7.75), list(58.25,50.0)),
   attributionControl = FALSE),
   west_trump_no) %>%
   addPolygons(
@@ -96,8 +100,11 @@ bes_2017 <- parlitools::bes_2017
 
 elect_results <- left_join(census_11, bes_2017)
 
-degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) + geom_point(alpha=0.75) +
-  geom_smooth(size=1.75, colour = "#DC241F") + ylab("Share of Votes Cast for Labour") + xlab("Percentage of Population with a University Degree")
+degree_plot <- ggplot(elect_results, aes(y=lab_17, x=degree)) +
+  geom_point(alpha=0.75) +
+  geom_smooth(size=1.75, colour = "#DC241F") +
+  ylab("Share of Votes Cast for Labour") + 
+  xlab("Percentage of Population with a University Degree")
 
 degree_plot
 
