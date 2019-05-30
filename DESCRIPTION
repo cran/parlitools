@@ -1,13 +1,14 @@
 Package: parlitools
 Type: Package
 Title: Tools for Analysing UK Politics
-Version: 0.3.1
+Version: 0.3.3
 Authors@R: person(
     "Evan Odell", email="evanodell91@gmail.com", 
-    role=c("aut", "cre"),  comment = c(ORCID = '0000-0003-1845-808X'))
+    role=c("aut", "cre"), comment = c(ORCID = '0000-0003-1845-808X'))
 Maintainer: Evan Odell <evanodell91@gmail.com>
-Description: Provides various tools for analysing UK political data, 
-    including creating political cartograms and retrieving data.
+Description: Provides various tools for analysing UK political data, including 
+    election result datasets, hexagonal cartograms and functions to 
+    retrieve council member data.
 URL: https://docs.evanodell.com/parlitools,
         https://github.com/EvanOdell/parlitools/
 BugReports: https://github.com/EvanOdell/parlitools/issues
@@ -21,7 +22,7 @@ Suggests: knitr, rmarkdown, testthat, covr, rgdal, devtools, leaflet,
         htmltools, cartogram, htmlwidgets, ggplot2, tibble
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-03-22 14:19:52 UTC; EOdell
+Packaged: 2019-05-30 13:38:48 UTC; evanodell
 Author: Evan Odell [aut, cre] (<https://orcid.org/0000-0003-1845-808X>)
 Repository: CRAN
-Date/Publication: 2019-03-22 15:10:08 UTC
+Date/Publication: 2019-05-30 14:00:03 UTC
