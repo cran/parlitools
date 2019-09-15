@@ -1,3 +1,7 @@
+# parlitools 0.3.4
+
+* Fixed issues being caused by some old vignettes.
+
 # parlitools 0.3.3
 
 * Fixed broken links in README

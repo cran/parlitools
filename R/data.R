@@ -79,7 +79,8 @@
 #' Irish constituencies is the party that won the seat.
 #'
 #' Variable names have been converted to snake_case and variables have been
-#' converted to appropriate R classes.
+#' converted to appropriate R classes. If using in publications, please
+#' cite as below:
 #'
 #' @references Fieldhouse, Edward, Jane Green, Geoffrey Evans,
 #' Hermann Schmitt, Cees van der Eijk, Jonathan Mellon, and
@@ -107,7 +108,8 @@
 #' \code{ons_const_id} and \code{constituency_name} variables. There are 
 #'
 #' Variable names have been converted to snake_case and variables have been
-#' converted to appropriate R classes.
+#' converted to appropriate R classes. If using in publications, please
+#' cite as below:
 #'
 #' @references Fieldhouse, E., J. Green., G. Evans., H. Schmitt,
 #' C. van der Eijk, J. Mellon & C. Prosser (2017) British Election Study

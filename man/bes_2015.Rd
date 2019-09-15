@@ -26,7 +26,8 @@ detailed results from Great Britain; the only data included on Northern
 Irish constituencies is the party that won the seat.
 
 Variable names have been converted to snake_case and variables have been
-converted to appropriate R classes.
+converted to appropriate R classes. If using in publications, please
+cite as below:
 }
 \references{
 Fieldhouse, Edward, Jane Green, Geoffrey Evans,

@@ -1,7 +1,7 @@
 Package: parlitools
 Type: Package
 Title: Tools for Analysing UK Politics
-Version: 0.3.3
+Version: 0.3.4
 Authors@R: person(
     "Evan Odell", email="evanodell91@gmail.com", 
     role=c("aut", "cre"), comment = c(ORCID = '0000-0003-1845-808X'))
@@ -22,7 +22,7 @@ Suggests: knitr, rmarkdown, testthat, covr, rgdal, devtools, leaflet,
         htmltools, cartogram, htmlwidgets, ggplot2, tibble
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-05-30 13:38:48 UTC; evanodell
+Packaged: 2019-09-15 16:59:36 UTC; evanodell
 Author: Evan Odell [aut, cre] (<https://orcid.org/0000-0003-1845-808X>)
 Repository: CRAN
-Date/Publication: 2019-05-30 14:00:03 UTC
+Date/Publication: 2019-09-15 22:50:02 UTC
